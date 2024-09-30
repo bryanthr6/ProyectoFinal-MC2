@@ -9,14 +9,14 @@ class AdivinacionCartasApp:
         self.root.title("201701010 - MC2 - Proyecto Final")
 
         # Cambiar el ícono de la ventana
-        self.root.iconbitmap(r"C:\Users\Bryant Herrera\Documents\Repositorios\ProyectoFinal-MC2\FIUSAC.ico")  # Archivo .ico
+        self.root.iconbitmap("FIUSAC.ico")  # Archivo .ico
 
         # Cambiar el color de fondo de la ventana principal
         self.root.configure(bg="#006691")  #color azul claro
 
         # Cargar las imágenes
-        self.logo = tk.PhotoImage(file=r"C:\Users\Bryant Herrera\Documents\Repositorios\ProyectoFinal-MC2\Usac_logo.png")
-        self.guess_image = tk.PhotoImage(file=r"C:\Users\Bryant Herrera\Documents\Repositorios\ProyectoFinal-MC2\guess.png")
+        self.logo = tk.PhotoImage(file="Usac_logo.png")
+        self.guess_image = tk.PhotoImage(file="guess.png")
 
         # Crear un marco para la imagen y el texto
         self.logo_frame = tk.Frame(root, bg="#006691")
