@@ -46,9 +46,13 @@ class AdivinacionCartasApp:
         
         self.start_button = tk.Button(root, text="Comenzar", command=self.iniciar_adivinacion, font=("Arial", 12, "bold"))
         self.start_button.pack(pady=10)  # Margen vertical
+
+        # Añadir una etiqueta para mostrar el número de tirada
+        self.tirada_label = tk.Label(root, text="", bg="#006691", fg="white", font=("Arial", 14, "bold"))
+        self.tirada_label.pack(pady=10)  # Margen vertical
         
         self.grupos_frame = tk.Frame(root, bg="#006691")
-        self.grupos_frame.pack(pady=8)  # Margen vertical para los grupos
+        self.grupos_frame.pack(pady=6)  # Margen vertical para los grupos
 
         self.result_label = tk.Label(root, text="", bg="#006691")
         self.result_label.pack(pady=9)
@@ -57,6 +61,7 @@ class AdivinacionCartasApp:
         self.creditos_label = tk.Label(root, text="Créditos", bg="#006691", fg="white", font=("Arial", 10, "underline"), cursor="hand2")
         self.creditos_label.pack(side=tk.BOTTOM, pady=15)  # Alinear al fondo con margen vertical
         self.creditos_label.bind("<Button-1>", self.mostrar_creditos)  # Asociar clic a la función
+
 
         self.seleccion = None  # Guardará la selección de grupo
 
@@ -79,12 +84,12 @@ class AdivinacionCartasApp:
         for i, grupo in enumerate(grupos):
             grupo_label = tk.Label(self.grupos_frame, text=f"Grupo {i+1}: {grupo}", 
                                 bg="#006691", fg="white", font=("Verdana", 9, "bold"))
-            grupo_label.pack(pady=5)  # Margen vertical
+            grupo_label.pack(pady=3)  # Margen vertical
 
         # Nueva etiqueta que se mostrará después de los grupos
         seleccion_label = tk.Label(self.grupos_frame, text="Selecciona el grupo donde se encuentra tu carta:", 
                                     bg="#006691", fg="white", font=("Verdana", 10, "bold"))
-        seleccion_label.pack(pady=10)  # Margen vertical
+        seleccion_label.pack(pady=5)  # Margen vertical
 
         # Crear los botones de opción (radio buttons)
         self.seleccion_var = tk.IntVar()
@@ -95,7 +100,7 @@ class AdivinacionCartasApp:
         # Botón para seleccionar el grupo
         self.next_button = tk.Button(self.grupos_frame, text="Seleccionar", 
                                     command=self.seleccionar_grupo, font=("Arial", 12, "bold"))
-        self.next_button.pack(pady=5)  # Margen vertical
+        self.next_button.pack(pady=0)  # Margen vertical
 
     def reorganizar_cartas(self, grupos, seleccion):
         if seleccion == 0:
@@ -125,27 +130,38 @@ class AdivinacionCartasApp:
             self.num_tiradas = 2
         elif num_cartas == 39:
             self.num_tiradas = 4
+        elif num_cartas == 33:
+            self.num_tiradas = 4
         else:
-            self.num_tiradas = 3  # Para 15, 21, 27, 33
+            self.num_tiradas = 3  # Para 15, 21, 27,
 
         self.tirada = 0
         self.adivinacion_tirada()
 
     def adivinacion_tirada(self):
         if self.tirada < self.num_tiradas:
+            # Actualizar el contador de tiradas
+            self.tirada_label.config(text=f"Tirada {self.tirada + 1}")
+            self.tirada_label.pack(pady=2)  # Margen vertical
+            
             # Mostrar los grupos y permitir la selección
             if self.tirada == 0:
                 self.grupos = self.mezclar_y_dividir(self.cartas)  # Primera vez, mezcla las cartas
             else:
                 self.cartas = self.reorganizar_cartas(self.grupos, self.seleccion)
                 self.grupos = self.mezclar_y_dividir(self.cartas)
+                
             self.mostrar_grupos(self.grupos)
             self.tirada += 1
         else:
             # Fin del proceso, adivinar la carta
             self.cartas = self.reorganizar_cartas(self.grupos, self.seleccion)
             posicion_carta = len(self.cartas) // 2
-            self.result_label.config(text=f"La carta que pensaste es: {self.cartas[posicion_carta]}", fg="white", font=("Helvetica", 12, "bold"))
+            carta_adivinada = self.cartas[posicion_carta]
+
+            # Mostrar la carta en un cuadro de diálogo emergente
+            messagebox.showinfo("Carta Adivinada", f"La carta que pensaste es: {carta_adivinada}")
+
 
 if __name__ == "__main__":
     root = tk.Tk()
